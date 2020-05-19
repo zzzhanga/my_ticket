@@ -1,6 +1,6 @@
 <template>
     <div>
-
+<section style="height: 100%">
 <!-- <city></city> -->
 
 
@@ -16,6 +16,33 @@
       </div>
     </header>
 
+  <!-- 正在上映 -->
+    <section  v-show="selnav"  class="content">
+      
+<!-- 引入轮播图组件 -->
+      <swiper :imgs="imgs"></swiper>
+<!-- 引入 hot组件 -->
+      <!-- <hot :hotLists="hotLists"></hot> -->
+
+    </section>
+
+    <!-- 即将上映  -->
+    <section  v-show="!selnav"  class="content">
+
+<!-- 引入coming组件 -->
+      <!-- <coming :comingLists="comingLists" ></coming> -->
+      <div class="click-load-more">
+        <span v-show="clickLoadStatus === 'start'">点击查看更多</span>
+        <div v-show="clickLoadStatus === 'loading'" class="loading-icon">
+          <span>加载中</span>
+          <mt-spinner style="display: inline-block" type="fading-circle" color="rgb(100, 100, 100)" :size="19"></mt-spinner>
+
+        </div>
+        <span v-show="clickLoadStatus === 'complete'">已经全部显示</span>
+      </div>
+    </section>
+    <!-- <play-video></play-video> -->
+  </section>
     </div>
 </template>
 
@@ -24,6 +51,7 @@
 
 
 // import city from '../components/Home/city'
+import swiper from '../components/Home/swiper2'
 
 export default {
     props: {
@@ -46,7 +74,12 @@ export default {
 
     },
     created() {
-
+ this.requestData('/movie/swiper', (response) => {
+      let data = response.data
+      console.log(data);
+      
+      this.imgs = data.data.data.returnValue
+    })
     },
     mounted() {
 
@@ -67,10 +100,18 @@ export default {
          selectComingTab(){
           this.moveDistance='55%'//控制下方红线的距离始终为5%
           this.selnav=false   //控制红色字体这个类始终具有
-        }
+        },
+
+
+          requestData (url, fn) {
+      // this.pushLoadStack()
+      this.$http.get(url).then(fn).then(this.completeLoad)
+    },
     },
     components: {
-// city
+// city,
+swiper
+
     },
 };
 </script>

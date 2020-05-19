@@ -1,7 +1,20 @@
 <template>
     <div>
-home组件
 
+<!-- <city></city> -->
+
+
+   <header class="home-header border-bottom">
+      <div class="city fl" >
+        <span class="vm city-name f14">北京</span>
+        <span class="city-arrow-icon vm"></span>
+      </div>
+      <div class="sel-lists f14 fl pr" @click="movTab">
+        <div hot='sel' :class="{selnav:selnav}">正在热映</div>
+        <div :class="{selnav:!selnav}">即将上映</div>
+        <span class="move pa" :style="{left: moveDistance}"></span>
+      </div>
+    </header>
 
     </div>
 </template>
@@ -9,7 +22,8 @@ home组件
 
 <script>
 
-// import {city} from '../components/Home/city'
+
+// import city from '../components/Home/city'
 
 export default {
     props: {
@@ -41,7 +55,19 @@ export default {
 
     },
     methods: {
-
+        movTab(event){
+          // 事件代理，给其中一个子元素一个hot属性，值为true 
+          // 如果该子元素具有hot属性 则执行前面一个函数 否则执行后面一个函数
+        event.target.getAttribute('hot')?this.selectHotTab():this.selectComingTab()
+        },
+        selectHotTab(){
+          this.moveDistance='5%'//控制下方红线的距离始终为5%
+          this.selnav=true   //控制红色字体这个类始终具有
+        },
+         selectComingTab(){
+          this.moveDistance='55%'//控制下方红线的距离始终为5%
+          this.selnav=false   //控制红色字体这个类始终具有
+        }
     },
     components: {
 // city

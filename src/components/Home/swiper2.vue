@@ -44,13 +44,16 @@ imgs(){
     this.$nextTick(()=>{
         var mySwiper = new Swiper('.swiper-container',{
         pagination: {
-             el: '.swiper-pagination',
-              loop: true,
-			    pagination: '.swiper-pagination',
-			    paginationClickable: true,
-			    autoplay : 2000,
-				autoplayDisableOnInteraction : false,	
-  },
+			el: '.swiper-pagination',
+			clickable :true,
+            },    
+                    loop: true,       
+                    autoplay: {
+                    delay: 1000,
+                    stopOnLastSlide: false,
+                    disableOnInteraction: true,
+                    },
+                    autoplayDisableOnInteraction : false,	
 })
     })
 

@@ -1,12 +1,12 @@
 <template>
     <div>
 <section style="height: 100%">
-<!-- <city></city> -->
+<city></city>
 
 
    <header class="home-header border-bottom">
-      <div class="city fl" >
-        <span class="vm city-name f14">北京</span>
+      <div class="city fl" @click="showCityList()">
+        <span class="vm city-name f14">{{ $store.state.city.name }}</span>
         <span class="city-arrow-icon vm"></span>
       </div>
       <div class="sel-lists f14 fl pr" @click="movTab">
@@ -52,6 +52,10 @@
 
 // import city from '../components/Home/city'
 import swiper from '../components/Home/swiper2'
+// import hot from '../components/Home/hot'
+import city from '../components/Home/city.vue'
+
+import {mapGetters,mapMutations} from "vuex"
 
 export default {
     props: {
@@ -70,24 +74,58 @@ export default {
       total: 0
         };
     },
-    computed: {
+    // 接收hotList数据
+    computed: mapGetters(['hotLists']),
 
-    },
+
+
     created() {
- this.requestData('/movie/swiper', (response) => {
+      this.requestData('/movie/swiper', (response) => {
+            let data = response.data
+            console.log(data);
+            
+            this.imgs = data.data.data.returnValue
+          })
+          console.log(this.hotLists);
+
+      this.requestData(`/movie/coming/?limit=${this.limit}&offset=${this.offset}`, (response) => {
       let data = response.data
-      console.log(data);
+      let lists = data.data.data.returnValue
+      //模拟索引数据的id号
+      lists.forEach((item, index) => {
+        item.mID = index  
+      })
+      this.loaingLists = lists
+      this.total = data.total
+      // this.comingLists = this.sortComingData(lists)
+      this.offset = this.offset + this.limit
+      // console.log(data);
       
-      this.imgs = data.data.data.returnValue
     })
+  console.log(this.$store.state.city);
+  
+    
     },
+
+
+
+
+
     mounted() {
+
 
     },
     watch: {
 
     },
+
+
+
     methods: {
+      ...mapMutations([
+        'showCityList',
+        
+      ]),
         movTab(event){
           // 事件代理，给其中一个子元素一个hot属性，值为true 
           // 如果该子元素具有hot属性 则执行前面一个函数 否则执行后面一个函数
@@ -102,15 +140,18 @@ export default {
           this.selnav=false   //控制红色字体这个类始终具有
         },
 
-
+ 
           requestData (url, fn) {
       // this.pushLoadStack()
       this.$http.get(url).then(fn).then(this.completeLoad)
     },
+
+     
     },
     components: {
-// city,
-swiper
+city,
+swiper,
+// hot
 
     },
 };

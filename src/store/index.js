@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 // import loadingMutations from './loading/mutations'
 import cityMutations from './city/mutations'
 import cityAcions from './city/actions'
-// import comingMutations from './coming/mutations'
+import comingMutations from './coming/mutations'
 // import areaMutations from './cinema/mutations'
 
 Vue.use(Vuex);
@@ -30,6 +30,7 @@ const loading = {
 }
 
 const cityGetters = {
+    // hotList 就是state.data的数据 在home中通过mapGetters引入
     hotLists: state => state.data,
     cityName: state => state.name
 }
@@ -49,7 +50,7 @@ const coming = {
     state: {
         lists: []
     },
-    // mutations: comingMutations
+    mutations: comingMutations
 }
 
 const cinema = {
@@ -63,6 +64,7 @@ export default new Vuex.Store({
     modules: {
 
         city,
+        coming,
 
     },
 })

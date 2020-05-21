@@ -1,17 +1,25 @@
 <template>	
 	<section ref="city" id="select-city" class="pf fadeInDown" v-if="$store.state.city.show">
-		<!-- <header class="city-header mint-1px-b pr">
+		<header class="city-header mint-1px-b pr">
 			<span class="fb">选择城市</span>
 			<span class="close-city pa" @click="cancelCityList">×</span>
 		</header>
-		<div ref="city" @click="selectCity">
+		<!-- <div ref="city" @click="selectCity">
 			<mt-index-list>
-			  <mt-index-section :index="city.sort" v-for="{city,index} in cityList" :key="index">
+			  <mt-index-section v-for="{city,index} in cityList" :key="index">
+				  {{city}}
 			    <mt-cell :title="name.regionName" v-for="{name} in city.data" :key="name.id"></mt-cell>
 			  </mt-index-section>
 			</mt-index-list>
 		</div> -->
-        city
+		<div ref="city" @click="selectCity">
+			<mt-index-list>
+				<mt-index-section :index="city.sort" v-for="(city,index) in cityList" :key="index">
+					<mt-cell :title="item.regionName" v-for="(item) in city.data" :key="item.id"> </mt-cell>
+				</mt-index-section>		
+			</mt-index-list>
+		</div>
+     
 	</section>
 </template>
 
@@ -33,14 +41,20 @@ export default{
 		  	// 'completeLoad'
 		]),
 		requestData (url, fn) {
-		  	this.pushLoadStack()
-		  	this.$http.get(url).then(fn).then(this.completeLoad)
+		  	// this.pushLoadStack()
+		  	this.$http.get(url).then(fn)
 		},
+
 		changeCityData (data) {
-			this.pushLoadStack()
+			// this.pushLoadStack()
 			this.$refs.city.className = "pf fadeOutTop"
-			this.$store.dispatch('updateCityAsync', data).then(this.completeLoad)
+			this.$store.dispatch('updateCityAsync', data)
+			// 改变城市名称 重新触发updataCityAsync方法 data
 		},
+
+
+		// 判断选择的城市，如果是北京上海和广州，则返回对应的缩写 
+		// 否则随机返回一个缩写
 		matchCityStr (str) {
 			let randomList = ['bj', 'sh', 'gz']
 			let randomCity = randomList[Math.floor(3*Math.random())]
@@ -51,6 +65,8 @@ export default{
 				default: return randomCity
 			}
 		},
+
+		// 选择城市方法
 		selectCity (event) {
 			let ele = event.target
 			let className = ele.className
@@ -75,12 +91,18 @@ export default{
 				return false
 			}
 		},
+		// 关闭city组件
 		cancelCityList () {
 			this.changeCityData({city: {}})
 		}
 	},
 	created () {
+		console.log(this.$store.state);
+	
+		
 		this.$store.dispatch('updateCityAsync', {city: {}})
+		
+		console.log({city:{}});
 		this.requestData('/movie/city', (response) => {
 			// let data = JSON.parse(response.data)
 			let data = response.data
@@ -108,7 +130,12 @@ export default{
 					data: cityObj[item]
 				})
 			})
+			console.log(data);
+			console.log(this.cityList);
+			console.log(this.cityList.data);
+			
 		})
+	
 	}
 }
 </script>

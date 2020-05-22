@@ -6,7 +6,8 @@
   		<li :class="{'border-bottom': hotLists[hotLists.length-1] != item}" v-for="(item,index) in hotLists" :key="index">
   			<figure class="m-img ml fl pr" @click="playMovieVideo(item.preview[0].iphoneUrl
 , `https://gw.alicdn.com/${item.poster}`)">
-  				<img v-lazyload="`https://gw.alicdn.com/${item.poster}`">
+				<!-- v-lazy 图片懒加载 -->
+  				<img v-lazy="`https://gw.alicdn.com/${item.poster}`">
   				<div class="play-icon pa">
   					<img src="https://gw.alicdn.com/tps/TB1PH2uLXXXXXaLaXXXXXXXXXXX-60-60.png" alt="">
   				</div>

@@ -22,7 +22,7 @@
 <!-- 引入轮播图组件 -->
       <swiper :imgs="imgs"></swiper>
 <!-- 引入 hot组件 -->
-      <!-- <hot :hotLists="hotLists"></hot> -->
+      <hot :hotLists="hotLists"></hot>
 
     </section>
 
@@ -50,9 +50,9 @@
 <script>
 
 
-// import city from '../components/Home/city'
+
 import swiper from '../components/Home/swiper2'
-// import hot from '../components/Home/hot'
+import hot from '../components/Home/hot'
 import city from '../components/Home/city.vue'
 
 import {mapGetters,mapMutations} from "vuex"
@@ -136,8 +136,8 @@ export default {
           this.selnav=true   //控制红色字体这个类始终具有
         },
          selectComingTab(){
-          this.moveDistance='55%'//控制下方红线的距离始终为5%
-          this.selnav=false   //控制红色字体这个类始终具有
+          this.moveDistance='55%'//控制下方红线的距离始终为55%
+          this.selnav=false   //控制红色字体这个类始终没有
         },
 
  
@@ -149,9 +149,9 @@ export default {
      
     },
     components: {
-city,
-swiper,
-// hot
+              city,
+              swiper,
+              hot,
 
     },
 };

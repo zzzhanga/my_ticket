@@ -81,6 +81,7 @@ export default{
 				name = ele.innerHTML 
 			}
 			if (name) {
+				// 这里传给changeCityData中的值 city有值
 				this.changeCityData({
 					city: {
 						name: name,
@@ -93,6 +94,7 @@ export default{
 		},
 		// 关闭city组件
 		cancelCityList () {
+			// 这里传到changeCityData()方法中的city为空 
 			this.changeCityData({city: {}})
 		}
 	},
@@ -100,14 +102,14 @@ export default{
 		console.log(this.$store.state);
 	
 		
-		this.$store.dispatch('updateCityAsync', {city: {}})
+		this.$store.dispatch('updateCityAsync', {city: {}})   //触发actions中的方法 更新数据
 		
-		console.log({city:{}});
+		// console.log({city:{}});
 		this.requestData('/movie/city', (response) => {
 			// let data = JSON.parse(response.data)
-			let data = response.data
-			let cityObj = data.data.data.returnValue
-			let citySort = Object.keys(cityObj)
+			let data = response.data		//获取到所有城市的数据（对象）
+			let cityObj = data.data.data.returnValue //获取到每一个城市的数据（对象）
+			let citySort = Object.keys(cityObj)//获取到对象中的每一个键  就是导航的索引
 			this.cityList.push({
 				sort: '热门',
 				data: [{
@@ -126,11 +128,32 @@ export default{
 			})
 			citySort.forEach((item) => {
 				this.cityList.push({
+					
 					sort: item,
-					data: cityObj[item]
+					data: cityObj[item],//看不懂，既然item是A到Z的字符串，cityObj是一个对象 ，不是数组 
+										//		为啥cityObj[item] 不报错 还能将数据添加到data中
+					
+					
 				})
+				// console.log(item)
+				// console.log(parseInt(item));
+				// console.log(cityObj[typeof()]);
+
+				// 把获取到的数据，全部添加到this.cityList上
+				
 			})
+			console.log("data");
+			
 			console.log(data);
+			console.log("cityObj");
+			
+			console.log(cityObj);
+			console.log(typeof(cityObj));
+			
+			
+			console.log(citySort);
+			console.log('cityList');
+			
 			console.log(this.cityList);
 			console.log(this.cityList.data);
 			

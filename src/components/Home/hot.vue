@@ -2,7 +2,7 @@
     <div>
 <section id='hot'>
   	<ul>
-          adsfa
+        
   		<li :class="{'border-bottom': hotLists[hotLists.length-1] != item}" v-for="(item,index) in hotLists" :key="index">
   			<figure class="m-img ml fl pr" @click="playMovieVideo(item.preview[0].iphoneUrl
 , `https://gw.alicdn.com/${item.poster}`)">
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-// import {mapGetters} from "vuex"
+import {mapMutations} from "vuex"
 export default {
     // 接收home页面传来的hotlist数据
     props: {

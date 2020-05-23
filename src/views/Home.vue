@@ -41,7 +41,7 @@
         <span v-show="clickLoadStatus === 'complete'">已经全部显示</span>
       </div>
     </section>
-    <!-- <play-video></play-video> -->
+    <play-video></play-video>
   </section>
     </div>
 </template>
@@ -54,6 +54,7 @@
 import swiper from '../components/Home/swiper2'
 import hot from '../components/Home/hot'
 import city from '../components/Home/city.vue'
+import playVideo from '../components/playVideo'
 
 import {mapGetters,mapMutations} from "vuex"
 
@@ -152,6 +153,7 @@ export default {
               city,
               swiper,
               hot,
+              playVideo,
 
     },
 };

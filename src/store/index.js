@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import videoMutations from './video/mutations'
+import videoMutations from './video/mutations'
 // import loadingMutations from './loading/mutations'
 import cityMutations from './city/mutations'
 import cityAcions from './city/actions'
@@ -10,6 +10,7 @@ import comingMutations from './coming/mutations'
 Vue.use(Vuex);
 
 const videoGetters = {
+    // showMask 就是state.playStatus 
     showMask: state => state.playStatus
 }
 const video = {
@@ -18,8 +19,8 @@ const video = {
         cover: '',
         playStatus: false
     },
-    // mutations: videoMutations,
-    // getters: videoGetters
+    mutations: videoMutations,
+    getters: videoGetters
 }
 
 const loading = {
@@ -62,9 +63,11 @@ const cinema = {
 
 export default new Vuex.Store({
     modules: {
-
         city,
         coming,
+        video
+    }
 
-    },
+
+
 })

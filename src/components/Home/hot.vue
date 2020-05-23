@@ -2,7 +2,8 @@
     <div>
 <section id='hot'>
   	<ul>
-        
+		 
+       
   		<li :class="{'border-bottom': hotLists[hotLists.length-1] != item}" v-for="(item,index) in hotLists" :key="index">
   			<figure class="m-img ml fl pr" @click="playMovieVideo(item.preview[0].iphoneUrl
 , `https://gw.alicdn.com/${item.poster}`)">
@@ -66,15 +67,26 @@ export default {
 
     },
     mounted() {
-this.getData()
+
+
+
     },
     watch: {
 
     },
-    methods: {
-getData(){
-    console.log(this.hotLists);
-    
+    methods: {	
+				...mapMutations([
+				'playVideo'
+				])
+			,
+		playMovieVideo(url,cover){
+			this.playVideo({audio: {
+  			url,
+  			cover
+		  }})
+	// 把参数转换成对象，传递到Mutions的playVideo（）方法中
+	alert('点击图片')
+
 }
     },
     components: {

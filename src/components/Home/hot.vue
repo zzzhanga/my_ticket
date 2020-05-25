@@ -85,7 +85,7 @@ export default {
   			cover
 		  }})
 	// 把参数转换成对象，传递到Mutions的playVideo（）方法中
-	alert('点击图片')
+	// alert('点击图片')
 
 }
     },

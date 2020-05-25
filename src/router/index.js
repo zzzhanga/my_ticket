@@ -25,10 +25,12 @@ export default new Router({
         path: '/cinema',
         component: Cinema
     }, {
-        path: '/cinemadetail',
+        path: '/cinema/detail/:id',
+        name: 'CinemaDetail',
         component: CinemaDetail
     }, {
         path: '/movie/detail/:id',
+        name: 'detail',
         component: MovieDetail
     }, {
         path: '/nodata',

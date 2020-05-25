@@ -30,8 +30,8 @@
     <section  v-show="!selnav"  class="content">
 
 <!-- 引入coming组件 -->
-      <!-- <coming :comingLists="comingLists" ></coming> -->
-      <div class="click-load-more">
+      <coming :comingLists="comingLists" ></coming>
+      <div class="click-load-more"  @click="clickLoadMore">
         <span v-show="clickLoadStatus === 'start'">点击查看更多</span>
         <div v-show="clickLoadStatus === 'loading'" class="loading-icon">
           <span>加载中</span>
@@ -55,6 +55,7 @@ import swiper from '../components/Home/swiper2'
 import hot from '../components/Home/hot'
 import city from '../components/Home/city.vue'
 import playVideo from '../components/playVideo'
+import coming from '../components/Home/coming'
 
 import {mapGetters,mapMutations} from "vuex"
 
@@ -81,6 +82,7 @@ export default {
 
 
     created() {
+      this.pushComingList({lists: []})
       this.requestData('/movie/swiper', (response) => {
             let data = response.data
             console.log(data);
@@ -98,7 +100,7 @@ export default {
       })
       this.loaingLists = lists
       this.total = data.total
-      // this.comingLists = this.sortComingData(lists)
+      this.comingLists = this.sortComingData(lists)
       this.offset = this.offset + this.limit
       // console.log(data);
       
@@ -125,6 +127,7 @@ export default {
     methods: {
       ...mapMutations([
         'showCityList',
+        'pushComingList'
         
       ]),
         movTab(event){
@@ -135,18 +138,77 @@ export default {
         selectHotTab(){
           this.moveDistance='5%'//控制下方红线的距离始终为5%
           this.selnav=true   //控制红色字体这个类始终具有
+          this.pushComingList({lists:[]})//添加即将上映列表 lists为空
         },
          selectComingTab(){
           this.moveDistance='55%'//控制下方红线的距离始终为55%
           this.selnav=false   //控制红色字体这个类始终没有
+          this.pushComingList({lists:this.loaingLists})//添加即将上映列表 lists不为空
         },
 
  
           requestData (url, fn) {
       // this.pushLoadStack()
       this.$http.get(url).then(fn).then(this.completeLoad)
+          
+          },
+          // 点击加载更多
+    clickLoadMore () {
+      if (this.clickLoadStatus != 'complete') {
+        this.clickLoadStatus = 'loading'
+        setTimeout(() => {
+          this.$http.get(`/movie/coming/?limit=${this.limit}&offset=${this.offset}`).then((response) => {
+            let data = response.data
+            let lists = data.data.data.returnValue
+            this.loaingLists = this.loaingLists.concat(lists)
+            //模拟索引数据的id号
+            this.loaingLists.forEach((item, index) => {
+              item.mID = index  
+            })
+            this.pushComingList({lists: this.loaingLists})
+            this.comingLists = this.sortComingData(this.loaingLists)
+            this.offset = this.offset + this.limit
+            if (this.offset < this.total) {
+              this.clickLoadStatus = 'start'
+            } else {
+              this.clickLoadStatus = 'complete'
+            }
+          })
+        }, 500)
+      }
     },
 
+      // 获取coming组件数据
+      sortComingData (lists) {
+            let comingLists = []
+            lists.forEach((item) => {
+              let hasItem = false
+              for (let i = 0; i < comingLists.length; i++) {
+                if (item.openTime === comingLists[i].openTime) {
+                  comingLists[i].movies.push(item)
+                  hasItem = true 
+                  break
+                }
+              }
+              if (!hasItem) {
+                let comingItem = {
+                  openTime: '',
+                  day: '',
+                  movies: []
+                }
+                comingItem.openTime = item.openTime
+                comingItem.day = this.getWeekDay(new Date(item.openTime).getDay())
+                comingItem.movies.push(item)
+                comingLists.push(comingItem)
+              }
+            })
+            return comingLists
+          },
+        // 显示星期
+      getWeekDay (num) {
+          let weeks = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+          return weeks[num]
+          },
      
     },
     components: {
@@ -154,6 +216,7 @@ export default {
               swiper,
               hot,
               playVideo,
+              coming,
 
     },
 };

@@ -26,7 +26,7 @@ export default new Router({
         component: Cinema
     }, {
         path: '/cinema/detail/:id',
-        name: 'CinemaDetail',
+        name: 'cdetail',
         component: CinemaDetail
     }, {
         path: '/movie/detail/:id',

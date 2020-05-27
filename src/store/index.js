@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import videoMutations from './video/mutations'
-// import loadingMutations from './loading/mutations'
+import loadingMutations from './loading/mutations'
 import cityMutations from './city/mutations'
 import cityAcions from './city/actions'
 import comingMutations from './coming/mutations'
-// import areaMutations from './cinema/mutations'
+import areaMutations from './cinema/mutations'
 
 Vue.use(Vuex);
 
@@ -27,7 +27,7 @@ const loading = {
     state: {
         stack: []
     },
-    // mutations: loadingMutations
+    mutations: loadingMutations
 }
 
 const cityGetters = {
@@ -58,14 +58,16 @@ const cinema = {
     state: {
         area: []
     },
-    // mutations: areaMutations
+    mutations: areaMutations
 }
 
 export default new Vuex.Store({
     modules: {
         city,
         coming,
-        video
+        video,
+        cinema,
+
     }
 
 

@@ -1,40 +1,47 @@
 <template>
-    <div>
-Cinema 组件
-    </div>
+	<section id="cinema">
+     
+		<city></city>
+		 <cinemaArea></cinemaArea>
+		<cinema></cinema>
+	</section>
 </template>
 
 <script>
-export default {
-    props: {
+import { mapMutations } from 'vuex'
+// import { cinema, cinemaArea, city } from '../components/'
+import city from '../components/Home/city'
+import cinema from '../components/cinema/cinema'
+import cinemaArea from '../components/cinema/movieArea'
 
-    },
-    data() {
-        return {
 
-        };
-    },
-    computed: {
-
-    },
-    created() {
-
+export default{
+	data () {
+		return {
+		}
+	},
+	components: {
+		cinema,
+		cinemaArea,
+		city
+	},
+	methods: {
+		...mapMutations([
+		  'pushLoadStack',
+		  'completeLoad',
+		  'showCityList'
+		]),
+		requestData (url, fn) {
+		  this.pushLoadStack()
+		  this.$http.get(url).then(fn)
+		}
     },
     mounted() {
-
+        
     },
-    watch: {
-
-    },
-    methods: {
-
-    },
-    components: {
-
-    },
-};
+}
 </script>
 
-<style scoped >
-
+<style>
 </style>
+
